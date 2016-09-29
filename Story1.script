@@ -13,16 +13,16 @@ Q=Old Man; Well that's rather rude, I will see you around boy.
 Q=;The Old Man walks off into the forest...
 %end
 $A
-Q=Old Man;my eyesight fails me <name> are you a lad or a lass?
+Q=Old Man;my eyesight fails me child are you a lad or a lass?
 %setGender:Uhhhhh
 %randomGender:Why do you want to know?
 $AA
-Q=Old Man;Well then how about that! what is your name child?
+Q=Old Man;Well then how about that! what is your name <gender3>?
 %setName:My name is...
 %randomName:I'm not telling you!
 $AB
 Q=Old Man;Dont worry about it <gender2>
-Q=Old Man;So <name> what do they call you around these parts
+Q=Old Man;So <gender3> what do they call you around these parts
 %setName:Uhhhhh
 %randomName:I said I ain't telling!
 $ABB
