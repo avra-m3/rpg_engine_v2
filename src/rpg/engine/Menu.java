@@ -72,7 +72,7 @@ public class Menu
         }
         catch(Exception ex)
         {
-            // TODO: catch ex here
+            // TODO: figure out what error is supposedly being thrown
         }
     }
     static final String[] STR_CREDITS = {

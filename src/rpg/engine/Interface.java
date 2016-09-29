@@ -21,13 +21,19 @@ interface StoryGuide
             {
                     "boy",
                     "girl",
-                    "lad"
+                    "lizard person"
             };
     String[] GENDER_TERMS_2 =
             {
-                    "son",
+                    "lad",
                     "lass",
                     "you"
+            };
+    String[] GENDER_TERMS_3 =
+            {
+                    "young man",
+                    "young lady",
+                    "young one"
             };
     String[] NAMES_MALE =
             {

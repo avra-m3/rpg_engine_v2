@@ -29,6 +29,7 @@ public final class Player implements StoryGuide
         Story.addVar("name", "child");
         Story.addVar("gender", GENDER_TERMS_1[2]);
         Story.addVar("gender2", GENDER_TERMS_2[2]);
+        Story.addVar("gender3", GENDER_TERMS_3[2]);
         Story.addVar("gender_code",2);
         // Add functions to the action table
         // No idea how this works DO NOT TOUCH
@@ -78,6 +79,11 @@ public final class Player implements StoryGuide
         // make sure it is the correct length
         if(line.length != 2)
             return;
+        /*
+        Make the line grammatically correct if it isnt already
+        (Upper case first letter and strip trailing/begining spaces)
+        */
+        line[1] = line[1].trim().replace("" + line[1].charAt(0), ("" +line[1].charAt(0)).toUpperCase() );
         this.narrationTable.put(this.narrationTable.size(), line);
     }
     public void addResponse(String response)
@@ -124,7 +130,6 @@ public final class Player implements StoryGuide
 
         if(this.responseTable.size() == 1 && this.responseTable.get(0).length == 1)
         {
-            System.out.println(this.responseTable.get(0)[0]);
             this.interpStringCode(this.responseTable.get(0)[0]);
             return;
         }
@@ -160,6 +165,11 @@ public final class Player implements StoryGuide
     }
     public void talk(String actor, String line)
     {
+        if(actor.isEmpty())
+        {
+            System.out.print(line);
+            return;
+        }
         System.out.printf("[%s]%-1s", actor,line);
     }
     public void ask(Integer index, String option )
@@ -238,6 +248,7 @@ public final class Player implements StoryGuide
     {
         Story.setVar("gender", GENDER_TERMS_1[genderIndex]);
         Story.setVar("gender2", GENDER_TERMS_2[genderIndex]);
+        Story.setVar("gender3", GENDER_TERMS_3[genderIndex]);
         Story.setVar("gender_code", genderIndex);
     }
     
@@ -274,6 +285,9 @@ public final class Player implements StoryGuide
         Rpg1.FLAG_GAME_STATUS = 0;
         this.clear();
         this.fillTables();
+        System.out.println("The End");
+        System.out.println("press enter to continue...");
+        Input.request();
         return "";
     }
     // utility functions

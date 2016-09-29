@@ -10,22 +10,23 @@ A:I have no parents so i can do what i want!
 B:I don't wanna talk to ya!!
 $B
 Q=Old Man; Well that's rather rude, I will see you around boy.
+Q=;The Old Man walks off into the forest...
 %end
 $A
+Q=Old Man;my eyesight fails me <name> are you a lad or a lass?
+%setGender:Uhhhhh
+%randomGender:Why do you want to know?
+$AA
 Q=Old Man;Well then how about that! what is your name child?
 %setName:My name is...
 %randomName:I'm not telling you!
-$AA
-Q=Old Man;Hi <name>, and are you a boy?
-%setGender:Uhhhhh
-%randomGender:Why do you want to know?
 $AB
-Q=Old Man;Well then, I think I will call you <name>
-Q=Old Man;I'm sorry young one but my eyesight fails me, are you a boy?
-%setGender:Uhhhhh
-%randomGender:I said I ain't telling!
+Q=Old Man;Dont worry about it <gender2>
+Q=Old Man;So <name> what do they call you around these parts
+%setName:Uhhhhh
+%randomName:I said I ain't telling!
 $ABB
-Q=Old Man;Well then, i'm gonna assume your a wee <gender>
+Q=Old Man;Well then, I will call you <name>!
 Q=Old Man;Seeing as you clearly don't trust me, imma gonna head off
 %end
 $AAB|AAA|ABA
