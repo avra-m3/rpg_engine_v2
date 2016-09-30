@@ -7,7 +7,17 @@ import java.util.HashMap;
 public class Story {
     static HashMap<String,Object> variables = new HashMap<>();
     static HashMap<String,Action> actions = new HashMap<>();
-    
+
+    // This function will be used to obtain player vars when saving.
+    static String[] getSaveString(HashMap<String,Object> vars) {
+        String[] result = new String[vars.size()];
+        int k = 0;
+        for (String str : vars.keySet()) {
+            result[k] = CONST.SAVE.VAR_STR_DELIM + str + CONST.SAVE.VAR_TYPE_DELIM + vars.get(str).getClass().getTypeName() + CONST.SAVE.VAR_VAL_DELIM + vars.get(str).toString();
+            k++;
+        }
+        return result;
+    }
     
     public static void addVar(String name, Object value)
     {

@@ -3,7 +3,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 
-public final class Player implements StoryGuide
+public final class Player
 {
     //stuff that we need for the Player
     public String status;
@@ -27,9 +27,9 @@ public final class Player implements StoryGuide
     {
         // Add key vars to the story table
         Story.addVar("name", "child");
-        Story.addVar("gender", GENDER_TERMS_1[2]);
-        Story.addVar("gender2", GENDER_TERMS_2[2]);
-        Story.addVar("gender3", GENDER_TERMS_3[2]);
+        Story.addVar("gender", CONST.STORY.GENDER_TERMS_1[2]);
+        Story.addVar("gender2", CONST.STORY.GENDER_TERMS_2[2]);
+        Story.addVar("gender3", CONST.STORY.GENDER_TERMS_3[2]);
         Story.addVar("gender_code",2);
         // Add functions to the action table
         // No idea how this works DO NOT TOUCH
@@ -61,9 +61,9 @@ public final class Player implements StoryGuide
             // if the line is empty we don't care about it
             if(line.isEmpty())
                 continue;
-            if(line.startsWith(Format.QUERY_DELIM))
+            if(line.startsWith(CONST.READ.QUERY_DELIM))
             {
-                this.addQuery(line.replace(Format.QUERY_DELIM,""));
+                this.addQuery(line.replace(CONST.READ.QUERY_DELIM,""));
             }
             else
             {
@@ -75,7 +75,7 @@ public final class Player implements StoryGuide
     public void addQuery(String query)
     {
         // split the query into actor and string, remembering to ignore escaped split delims
-        String[] line = query.split("(?<!"+ Format.IGNORE_DELIM +")"+ Format.SPLIT_DELIM_1);
+        String[] line = query.split("(?<!"+ CONST.READ.IGNORE_DELIM +")"+ CONST.READ.SPLIT_DELIM_1);
         // make sure it is the correct length
         if(line.length != 2)
             return;
@@ -89,7 +89,7 @@ public final class Player implements StoryGuide
     public void addResponse(String response)
     {
         // we want to ignore decision delims preceeded by escape chars
-        String[] line = response.split("(?<!"+ Format.IGNORE_DELIM +")"+ Format.SPLIT_DELIM_2);
+        String[] line = response.split("(?<!"+ CONST.READ.IGNORE_DELIM +")"+ CONST.READ.SPLIT_DELIM_2);
         // we should only have 2 results if we get more play it safe and ignore this
         if(line.length != 2)
         {
@@ -196,7 +196,7 @@ public final class Player implements StoryGuide
     }
     public String insertVars(String line)
     {
-        String[] varList = line.split("(?<!"+ Format.IGNORE_DELIM + ")" + Format.VAR_DELIM_1 +"|(?<!" + Format.IGNORE_DELIM + ")"+ Format.VAR_DELIM_2);
+        String[] varList = line.split("(?<!"+ CONST.READ.IGNORE_DELIM + ")" + CONST.READ.VAR_DELIM_1 +"|(?<!" + CONST.READ.IGNORE_DELIM + ")"+ CONST.READ.VAR_DELIM_2);
         String v;
         for(int ind = 0; ind < varList.length; ind++)
         {
@@ -218,15 +218,15 @@ public final class Player implements StoryGuide
     public boolean isActionCall(String code)
     {  // System.out.println(Arrays.toString(this.actionTable.keySet().toArray()));
        // System.out.printf("Call: %s\nPassed check 1: %s\nPassed check 2: %s\nCheck 2 key: %s\n", code,code.startsWith("" + Format.FUNCTION_DELIM), this.actionTable.containsKey(code.replace(""+Format.FUNCTION_DELIM,"").trim()),code.replace(""+Format.FUNCTION_DELIM,"") );
-        if(code.startsWith("" + Format.FUNCTION_DELIM))
-            if(Story.hasAction(code.replace(Format.FUNCTION_DELIM,"")))       
+        if(code.startsWith("" + CONST.READ.FUNCTION_DELIM))
+            if(Story.hasAction(code.replace(CONST.READ.FUNCTION_DELIM,"")))       
                 return true;
         return false;
     }
     public String makeActionCall(String code)
     {
         String result;
-        String call = code.replace(Format.FUNCTION_DELIM,"").split(Format.ARUMENT_DELIM,1)[0];
+        String call = code.replace(CONST.READ.FUNCTION_DELIM,"").split(CONST.READ.ARUMENT_DELIM,1)[0];
         //System.out.println(call);
         result = Story.callAction(call,getArguments(code));
         return result;
@@ -234,11 +234,11 @@ public final class Player implements StoryGuide
     public String[] getArguments(String call)
     {
         String[] result;
-        result = call.split("%[^"+ Format.ARUMENT_DELIM + "]*"+ Format.ARUMENT_DELIM + "|"+ Format.ARUMENT_DELIM);
+        result = call.split("%[^"+ CONST.READ.ARUMENT_DELIM + "]*"+ CONST.READ.ARUMENT_DELIM + "|"+ CONST.READ.ARUMENT_DELIM);
         return result;
     }
     // All functions below this comment are custom functions for the story to be called by the script
-    
+
     // hard set functions here
     public void setName(String name)
     {
@@ -246,12 +246,12 @@ public final class Player implements StoryGuide
     }
     public void setGender(int genderIndex)
     {
-        Story.setVar("gender", GENDER_TERMS_1[genderIndex]);
-        Story.setVar("gender2", GENDER_TERMS_2[genderIndex]);
-        Story.setVar("gender3", GENDER_TERMS_3[genderIndex]);
+        Story.setVar("gender", CONST.STORY.GENDER_TERMS_1[genderIndex]);
+        Story.setVar("gender2", CONST.STORY.GENDER_TERMS_2[genderIndex]);
+        Story.setVar("gender3", CONST.STORY.GENDER_TERMS_3[genderIndex]);
         Story.setVar("gender_code", genderIndex);
     }
-    
+
     // action functions
     public String setName(String[] args)
     {
@@ -264,7 +264,7 @@ public final class Player implements StoryGuide
         this.setName(getRandomName());
         return "B";
     }
-    
+
     public String setGender(String[] args)
     {
         System.out.println("What is your gender?");
@@ -300,11 +300,11 @@ public final class Player implements StoryGuide
     {
         String firstname,lastname = "";
 
-        if((Integer) Story.getVar("gender_code")== 2)  
-            firstname = NAMES_FEMALE[rngDice.nextInt(NAMES_FEMALE.length)];
+        if((Integer) Story.getVar("gender_code")== 2)
+            firstname = CONST.STORY.NAMES_FEMALE[rngDice.nextInt(CONST.STORY.NAMES_FEMALE.length)];
         else
-            firstname = NAMES_MALE[rngDice.nextInt(NAMES_MALE.length)];
-        lastname = NAMES_LASTNAMES[rngDice.nextInt(NAMES_LASTNAMES.length)];
+            firstname = CONST.STORY.NAMES_MALE[rngDice.nextInt(CONST.STORY.NAMES_MALE.length)];
+        lastname = CONST.STORY.NAMES_LASTNAMES[rngDice.nextInt(CONST.STORY.NAMES_LASTNAMES.length)];
         return firstname + " " + lastname;
     }
     

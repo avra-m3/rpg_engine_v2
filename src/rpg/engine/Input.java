@@ -1,8 +1,9 @@
 package rpg.engine;
+
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.FileReader;
 import java.util.HashMap;
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -16,7 +17,7 @@ import java.util.HashMap;
  */
 
 
-public class Input implements Format{
+public class Input implements CONST.READ{
     
     
     private static BufferedReader console   = new BufferedReader(new InputStreamReader(System.in));
