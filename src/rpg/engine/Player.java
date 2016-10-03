@@ -83,7 +83,7 @@ public final class Player
         Make the line grammatically correct if it isnt already
         (Upper case first letter and strip trailing/begining spaces)
         */
-        line[1] = line[1].trim().replaceAll("^[\\s\\S]", ("" +line[1].charAt(0)).toUpperCase());
+        line[1] = line[1].trim().replaceAll("^[\\s\\S]", ("" +line[1].trim().charAt(0)).toUpperCase());
         this.narrationTable.put(this.narrationTable.size(), line);
     }
     public void addResponse(String response)

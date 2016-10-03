@@ -61,17 +61,16 @@ public class Input implements CONST.READ{
                     {
                         story[i] = scLine;
                         i++;
+                        file.mark(1024);
                     }
-                    
+                    file.reset();
                     for(String code:line.split("\\"+OR_CODE_DELIM))
                     {
                         // use putIfAbsent so the earliest copy of any code will be the one used
                         script.putIfAbsent(code,story);
                     }
-                    line = scLine;
                 }
-                else
-                    line = file.readLine();
+                line = file.readLine();
             }
         }
         catch(Exception ex)
@@ -79,6 +78,11 @@ public class Input implements CONST.READ{
             
         }
         return script;
+    }
+    /**String[] readVars(BufferedReader)*/
+    String[] readVars(BufferedReader file)
+    {
+        return new String[1];
     }
     public String[] getScript(String code)
     {

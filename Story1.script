@@ -1,34 +1,34 @@
-$*
-Q=Old Man;Sadly child, this is where we must part ways, it seems I have nothing more to teach you.
-Q=System;Story ended unexpectedly due to unclosed story path.
-Q=System;Please report this message to the nearest developer along with the story code
++*
+&Old Man;Sadly child, this is where we must part ways, it seems I have nothing more to teach you.
+&System;Story ended unexpectedly due to unclosed story path.
+&System;Please report this message to the nearest developer along with the story code
 %end
-$
-Q=Old Man;Hello <name>, what are you doing out in the woods?
++
+&Old Man;Hello <name>, what are you doing out in the woods?
 A:Looking for the spooky monster, I'm going to slay it.
 A:I have no parents so i can do what i want!
 B:I don't wanna talk to ya!!
-$B
-Q=Old Man; Well that's rather rude, I will see you around boy.
-Q=;The Old Man walks off into the forest...
++B
+&Old Man;Well that's rather rude, I will see you around boy.
+&;The Old Man walks off into the forest...
 %end
-$A
-Q=Old Man;my eyesight fails me child are you a lad or a lass?
++A
+&Old Man;my eyesight fails me child are you a lad or a lass?
 %setGender:Uhhhhh
 %randomGender:Why do you want to know?
-$AA
-Q=Old Man;Well then how about that! what is your name <gender3>?
++AA
+&Old Man; Well then how about that! what is your name <gender3>?
 %setName:My name is...
 %randomName:I'm not telling you!
-$AB
-Q=Old Man;Dont worry about it <gender2>
-Q=Old Man;So <gender3> what do they call you around these parts
++AB
+&Old Man;Dont worry about it <gender2>
+&Old Man;So <gender3> what do they call you around these parts
 %setName:Uhhhhh
 %randomName:I said I ain't telling!
-$ABB
-Q=Old Man;Well then, I will call you <name>!
-Q=Old Man;Seeing as you clearly don't trust me, imma gonna head off
++ABB
+&Old Man;Well then, I will call you <name>!
+&Old Man;Seeing as you clearly don't trust me, imma gonna head off
 %end
-$AAB|AAA|ABA
-Q=Old Man; Its been a pleasure meeting you <name>, see you round' <gender>
++AAB|AAA|ABA
+&Old Man; Its been a pleasure meeting you <name>, see you round' <gender>
 %end

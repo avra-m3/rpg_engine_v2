@@ -7,6 +7,7 @@ import java.util.HashMap;
 public class Story {
     static HashMap<String,Object> variables = new HashMap<>();
     static HashMap<String,Action> actions = new HashMap<>();
+    static HashMap<String,Class> clMap = new HashMap<>();
 
     // This function will be used to obtain player vars when saving.
     static String[] getSaveString(HashMap<String,Object> vars) {
@@ -17,6 +18,11 @@ public class Story {
             k++;
         }
         return result;
+    }
+    static HashMap<String,Object> readSaveString(String[] vars){
+        // TODO: Write function to read strings into the variable file
+
+        return null;
     }
     
     public static void addVar(String name, Object value)
@@ -38,11 +44,14 @@ public class Story {
     
     public static Object getVar(String name)
     {
+        if(!variables.containsKey(name))return "<Null pointer key(key does not exist)>";
         return variables.get(name);
     }
     public static String getString(String name)
     {
-        return (String) variables.get(name);
+        if(!(variables.get(name) instanceof String))return "<Incorrect variable type(Requested String)>";
+            return (String) variables.get(name);
+
     }
     public static void clearVars()
     {
