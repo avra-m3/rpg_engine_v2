@@ -1,3 +1,8 @@
+Syntax rules: / exits out of a char string
+/+ implements a new situation string in the story, * is the default the game sends the player to if no result is found
+/& represents a query string (originally Q=) these are lines a character or the narrator reads
+/% lines that begin with % are options that call functions within the java code in order to get their result
+
 +*
 &Old Man;Sadly child, this is where we must part ways, it seems I have nothing more to teach you.
 &System;Story ended unexpectedly due to unclosed story path.
