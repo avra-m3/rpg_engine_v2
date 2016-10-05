@@ -17,7 +17,7 @@ public class Menu
     // Menu order (max 10 options arbitrary)
     String[] menuOptionsStr = new String[10];
 
-    // Constructor
+    /** Constructor*/
     Menu()
     {
         menuOptions.put("New Game", () -> this.optionStartGame());
@@ -27,7 +27,7 @@ public class Menu
         menuOptionsStr[1] = "Credits";
         menuOptionsStr[2] = "Quit";
     }
-    
+    /** show main menu */
     void show()
     {
         System.out.println("Welcome to " + this.STR_TITLE);
@@ -38,23 +38,28 @@ public class Menu
             this.ask(i + 1, menuOptionsStr[i]);
         }
     }
+    /**get the selected menu option*/
     void get()
     {
         int result = Input.requestChoice(1, menuOptions.size()+1);
         this.menuOptions.get(menuOptionsStr[result-1]).run();
     }
+    /**format an option*/
     void ask(int index, String option)
     {
         System.out.printf("%d:%-1s\n",index,option);
     }
+    /**function to start a game*/
     void optionStartGame()
     {
-        Rpg1.FLAG_GAME_STATUS = 1;
+        Loop.FLAG_GAME_STATUS = 1;
     }
+    /**function to exit the game*/
     void optionExitGame()
     {
-        Rpg1.FLAG_GAME_STATUS = -1;
+        Loop.FLAG_GAME_STATUS = -1;
     }
+    /**function to show credits*/
     void optionShowCredits()
     {
         // No idea why we have a try-catch syatement here but ill keep it 
@@ -75,6 +80,7 @@ public class Menu
             // TODO: figure out what error is supposedly being thrown
         }
     }
+
     static final String[] STR_CREDITS = {
         "",
         "--------------------------------------------------------------------",

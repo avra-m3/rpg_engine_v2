@@ -1,44 +1,28 @@
 package rpg.engine;
 import java.util.HashMap;
-import java.util.Random;
 
 
-public final class Player
+
+public abstract class Player
 {
     //stuff that we need for the Player
     public String status;
-
-    private Random rngDice;
-    private Input lookup;
+    public Input lookup;
+    public Story story;
     // List of random names to draw from
 
     HashMap<Integer,String[]> responseTable = new HashMap<>();
     HashMap<Integer,String[]> narrationTable = new HashMap<>();
-    // Player class constructor
-    Player(Input lookup) {
-        this.lookup = lookup;
+    /**Player class constructor*/
+    public Player() {
+        this.lookup = new Input();
+        this.story = new Story();
         this.status = "";
-        this.rngDice = new Random();
-        
-        this.fillTables();
+        this.init();
         
     }
-    public void fillTables()
-    {
-        // Add key vars to the story table
-        Story.addVar("name", "child");
-        Story.addVar("gender", CONST.STORY.GENDER_TERMS_1[2]);
-        Story.addVar("gender2", CONST.STORY.GENDER_TERMS_2[2]);
-        Story.addVar("gender3", CONST.STORY.GENDER_TERMS_3[2]);
-        Story.addVar("gender_code",2);
-        // Add functions to the action table
-        // No idea how this works DO NOT TOUCH
-        Story.addAction("end", (args) -> endGame(args));
-        Story.addAction("setName", (args) -> setName(args));
-        Story.addAction("randomName", (args) -> randomName(args));
-        Story.addAction("setGender", (args) -> setGender(args));
-        Story.addAction("randomGender", (args) -> randomGender(args));
-    }
+    /***/
+    public abstract void init();
     public void putNextStatus()
     {
         String[] myStatus = this.lookup.getScript(this.status);
@@ -211,15 +195,15 @@ public final class Player
     }
     public String getVar(String var)
     {
-        if(Story.hasString(var))
-            return Story.getString(var);
+        if(this.story.hasString(var))
+            return this.story.getString(var);
         return "<Null Variable Pointer("+ var +") >";
     }
     public boolean isActionCall(String code)
     {  // System.out.println(Arrays.toString(this.actionTable.keySet().toArray()));
        // System.out.printf("Call: %s\nPassed check 1: %s\nPassed check 2: %s\nCheck 2 key: %s\n", code,code.startsWith("" + Format.FUNCTION_DELIM), this.actionTable.containsKey(code.replace(""+Format.FUNCTION_DELIM,"").trim()),code.replace(""+Format.FUNCTION_DELIM,"") );
         if(code.startsWith("" + CONST.READ.FUNCTION_DELIM))
-            if(Story.hasAction(code.replace(CONST.READ.FUNCTION_DELIM,"")))       
+            if(this.story.hasAction(code.replace(CONST.READ.FUNCTION_DELIM,"")))
                 return true;
         return false;
     }
@@ -228,7 +212,7 @@ public final class Player
         String result;
         String call = code.replace(CONST.READ.FUNCTION_DELIM,"").split(CONST.READ.ARUMENT_DELIM,1)[0];
         //System.out.println(call);
-        result = Story.callAction(call,getArguments(code));
+        result = this.story.callAction(call,getArguments(code));
         return result;
     }
     public String[] getArguments(String call)
@@ -236,76 +220,6 @@ public final class Player
         String[] result;
         result = call.split("%[^"+ CONST.READ.ARUMENT_DELIM + "]*"+ CONST.READ.ARUMENT_DELIM + "|"+ CONST.READ.ARUMENT_DELIM);
         return result;
-    }
-    // All functions below this comment are custom functions for the story to be called by the script
-
-    // hard set functions here
-    public void setName(String name)
-    {
-        Story.setVar("name", name);
-    }
-    public void setGender(int genderIndex)
-    {
-        Story.setVar("gender", CONST.STORY.GENDER_TERMS_1[genderIndex]);
-        Story.setVar("gender2", CONST.STORY.GENDER_TERMS_2[genderIndex]);
-        Story.setVar("gender3", CONST.STORY.GENDER_TERMS_3[genderIndex]);
-        Story.setVar("gender_code", genderIndex);
-    }
-
-    // action functions
-    public String setName(String[] args)
-    {
-        System.out.println("What is your name? ");
-        this.setName(Input.requestString());
-        return "A";
-    }
-    public String randomName(String[] args)
-    {
-        this.setName(getRandomName());
-        return "B";
-    }
-
-    public String setGender(String[] args)
-    {
-        System.out.println("What is your gender?");
-        this.ask(1, "Male");
-        this.ask(2, "Female");
-        this.ask(3, "I'm not defined by gender");
-        int result = Input.requestChoice(1, 3);
-        this.setGender(result -1);
-        return "B";
-    }
-    public String randomGender(String[] args)
-    {
-        setGender(rngDice.nextInt(2));
-        return "B";
-    }
-    public String endGame(String[] args)
-    {
-        Rpg1.FLAG_GAME_STATUS = 0;
-        this.clear();
-        this.fillTables();
-        System.out.println("The End");
-        System.out.println("press enter to continue...");
-        Input.request();
-        return "";
-    }
-    // utility functions
-    public void clear()
-    {
-        this.status = "";
-        Story.clearVars();
-    }
-    public String getRandomName()
-    {
-        String firstname,lastname = "";
-
-        if((Integer) Story.getVar("gender_code")== 2)
-            firstname = CONST.STORY.NAMES_FEMALE[rngDice.nextInt(CONST.STORY.NAMES_FEMALE.length)];
-        else
-            firstname = CONST.STORY.NAMES_MALE[rngDice.nextInt(CONST.STORY.NAMES_MALE.length)];
-        lastname = CONST.STORY.NAMES_LASTNAMES[rngDice.nextInt(CONST.STORY.NAMES_LASTNAMES.length)];
-        return firstname + " " + lastname;
     }
     
 }

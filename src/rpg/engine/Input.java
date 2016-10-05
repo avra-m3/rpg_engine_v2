@@ -33,7 +33,7 @@ public class Input implements CONST.READ{
     }
    
     // Run stuff on initialisation
-    void load( String filename )
+    public void load( String filename )
     {
         this.storyFile = Input.read(filename);
     }
