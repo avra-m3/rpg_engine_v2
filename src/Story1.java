@@ -2,6 +2,7 @@ import rpg.engine.Input;
 import rpg.engine.Loop;
 import rpg.engine.Player;
 
+import java.util.Arrays;
 import java.util.Random;
 
 
@@ -28,6 +29,14 @@ public class Story1 extends Player{
         this.story.addVar("gender2", STORY.GENDER_TERMS_2[2]);
         this.story.addVar("gender3", STORY.GENDER_TERMS_3[2]);
         this.story.addVar("gender_code",2);
+        this.story.addVar("status",this.status);
+
+        this.story.addVar("inv_slot_1","empty");
+        this.story.addVar("inv_slot_2","empty");
+        this.story.addVar("inv_slot_3","empty");
+        this.story.addVar("inv_slot_4","empty");
+        this.story.addVar("inv_slot_5","empty");
+        this.story.addVar("inv_slot_6","empty");
         // Add functions to the action table
         // No idea how this works DO NOT TOUCH
         // Intelij made changes to what netbeans suggested, still dont know how it works DO NOT TOUCH!!!
@@ -36,6 +45,15 @@ public class Story1 extends Player{
         this.story.addAction("randomName", this::randomName);
         this.story.addAction("setGender", this::setGender);
         this.story.addAction("randomGender", this::randomGender);
+        this.story.addAction("print", this::printVar);
+        this.story.addAction("inventory", this::printInventory);
+    }
+    /**Story Function: printVar, [DEBUG] used in testing to make sure arguments feature is working*/
+    private String printVar(String[] args)
+    {
+        System.out.print("PRINTER: ");
+        System.out.println(Arrays.toString(args));
+        return "";
     }
     /**Story Function: setName, sets the players name*/
     private void setName(String name)
@@ -110,6 +128,43 @@ public class Story1 extends Player{
         lastname = STORY.NAMES_LASTNAMES[rngDice.nextInt(STORY.NAMES_LASTNAMES.length)];
         return firstname + " " + lastname;
     }
+
+    /**
+     * prints the player inventory variables
+     * @param args technically can accept args but will not actually use them.
+     * @return an empty string, this function is not designed to further the story in any way.
+     */
+    private String printInventory(String[] args)
+    {
+        System.out.println("Inventory:");
+        for(int i=0;i<3;i++) {
+            System.out.print("|");
+            for (int x = 0; x < 12; x++)
+                System.out.print("-");
+        }
+        System.out.println("|");
+        System.out.printf("|%-12s|%-12s|%-12s|\n",
+                this.story.getString("inv_slot_1"),
+                this.story.getString("inv_slot_2"),
+                this.story.getString("inv_slot_3"));
+        for(int i=0;i<3;i++) {
+            System.out.print("|");
+            for (int x = 0; x < 12; x++)
+                System.out.print("-");
+        }
+        System.out.println("|");
+        System.out.printf("|%-12s|%-12s|%-12s|\n",
+                this.story.getString("inv_slot_4"),
+                this.story.getString("inv_slot_5"),
+                this.story.getString("inv_slot_6"));
+        for(int i=0;i<3;i++) {
+            System.out.print("|");
+            for (int x = 0; x < 12; x++)
+                System.out.print("-");
+        }
+        System.out.println("|");
+        return "";
+    }
 }
 /**Interface: STORY, contains constants that are implemented in the story.*/
 interface STORY
@@ -140,6 +195,8 @@ interface STORY
                     "Chelton",
                     "John",
                     "Nick",
+                    "Avrami",
+                    "Tom",
             };
     String[] NAMES_FEMALE =
             {
@@ -164,5 +221,6 @@ interface STORY
                     "Mother",
                     "Janeway",
                     "Picard",
+                    "Lawlor",
             };
 }

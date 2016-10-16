@@ -5,21 +5,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- *
- * @author A
- */
-
 
 public class Input implements CONST.READ{
-    
-    
+
     private static BufferedReader console   = new BufferedReader(new InputStreamReader(System.in));
     HashMap<String,String[]> storyFile  = new HashMap<>();
     

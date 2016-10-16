@@ -1,26 +1,21 @@
 package rpg.engine;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 
 public class Story {
-    HashMap<String,Object> variables = new HashMap<>();
-    HashMap<String,Action> actions = new HashMap<>();
-    //Note: the following code is an attempted implementation of the read function
-    static HashMap<String,Class> typeMap = new HashMap<>();
-    static
-    {
-        typeMap.put("java.lang.String",String.class);
-        typeMap.put("java.lang.Integer",Integer.class);
-        typeMap.put("java.lang.Boolean",Boolean.class);
-
-    }
+    private HashMap<String,Object> variables = new HashMap<>();
+    private HashMap<String,Action> actions = new HashMap<>();
     /** This function will be used to obtain player vars when saving.*/
      String[] getSaveString(HashMap<String,Object> vars) {
         String[] result = new String[vars.size()];
         int k = 0;
         for (String str : vars.keySet()) {
-            result[k] = CONST.SAVE.VAR_STR_DELIM + str + CONST.SAVE.VAR_TYPE_DELIM + vars.get(str).getClass().getTypeName() + CONST.SAVE.VAR_VAL_DELIM + vars.get(str).toString();
+            if(vars.get(str).getClass().isArray())
+                result[k] = CONST.SAVE.VAR_STR_DELIM + str + CONST.SAVE.VAR_TYPE_DELIM + vars.get(str).getClass().getTypeName() + CONST.SAVE.VAR_VAL_DELIM + Arrays.toString((Object[]) vars.get(str));
+            else
+                result[k] = CONST.SAVE.VAR_STR_DELIM + str + CONST.SAVE.VAR_TYPE_DELIM + vars.get(str).getClass().getTypeName() + CONST.SAVE.VAR_VAL_DELIM + vars.get(str).toString();
             k++;
         }
         return result;
@@ -38,11 +33,18 @@ public class Story {
             temp = temp[1].split(CONST.SAVE.VAR_VAL_DELIM,1);
             type = temp[0];
             value = temp[1];
-            //This code is designed to convert a string into its true type
-            /*if(typeMap.containsKey(type))
-                value = typeMap.get(type).valueOf(value);
-            else
-                continue;*/
+            if(type.equals("java.lang.Integer"))
+                value = Integer.valueOf((String) value);
+            else if(type.equals("java.lang.Boolean"))
+                value = Boolean.valueOf((String) value);
+            else if(!(type.equals("java.lang.String")))
+                value += "<" + type + ">";
+            if(type.endsWith("[]"))
+            {
+                type = type.substring(0,type.length()-2);
+                value = StringToArray(type,(String) value);
+            }
+
             result.put(name,value);
         }
         return result;
@@ -127,6 +129,33 @@ public class Story {
     {
         clearActions();
         clearVars();
+    }
+    static Object[] StringToArray(String type, String str) {
+        Object[] result;
+        str = str.substring(1,str.length()-1);
+        String[] temp = str.split(",");
+        result = new Object[temp.length];
+        int x = 0;
+        if(type == "java.lang.Integer")
+            for(String s:temp) {
+                result[x] = Integer.valueOf(s);
+                ++x;
+            }
+        else if(type == "java.lang.Boolean")
+
+            for(String s:temp) {
+                if(s == "null") s = null;
+                result[x] = Boolean.valueOf(s);
+                ++x;
+            }
+        else if(!(type == "java.lang.String"))
+            for(String s:temp) {
+                result[x] = String.valueOf(s);
+                ++x;
+            }
+        else result = temp;
+
+        return result;
     }
     
 }

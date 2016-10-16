@@ -1,42 +1,62 @@
 package rpg.engine;
 import java.util.HashMap;
 
+/***
+ * <h1>Player class</h1>
+ * <h5>The player class is the main class of this package, sub stories should extend this abstract and define functions
+ * used in the story as required.</h5>
+ */
 
 
 public abstract class Player
 {
-    //stuff that we need for the Player
-    public String status;
-    public Input lookup;
-    public Story story;
-    // List of random names to draw from
-
-    HashMap<Integer,String[]> responseTable = new HashMap<>();
-    HashMap<Integer,String[]> narrationTable = new HashMap<>();
-    /**Player class constructor*/
+    /**
+     * Internal Variables
+     */
+    protected String status;
+    protected Input lookup;
+    protected Story story;
+    /**
+     * Map definitions
+     */
+    private HashMap<Integer,String[]> responseTable = new HashMap<>();
+    private HashMap<Integer,String[]> narrationTable = new HashMap<>();
+    /**
+     * Player class constructor
+     */
     public Player() {
         this.lookup = new Input();
         this.story = new Story();
         this.status = "";
         this.init();
-        
     }
-    /***/
+
+    /**<h1>Init required to ensure child code is neat</h1>
+     * <br>All items in the story table should be added here
+     */
     public abstract void init();
-    public void putNextStatus()
+    /**
+     * <b>Void:</b> putNextStatus()
+     * This functions gets the next status from the input buffer.
+     */
+    void putNextStatus()
     {
         String[] myStatus = this.lookup.getScript(this.status);
-        //System.out.print(Arrays.toString(myStatus));
         this.putStatus(myStatus);
     }
-    // interpret and show Input
-    public void putStatus(String[] script)
+
+    /**
+     *  <b>Void:</b> putStatus
+     *  <p>This functions gets the .script information associated with the strStatus and reads it into the narration and response buffers.</p>
+     *  @param strStatus String code of the script to get from the input buffer
+     */
+    private void putStatus(String[] strStatus)
     {
         // wipe the current mapping
         this.narrationTable.clear();
         this.responseTable.clear();
         //
-        for(String line : script)
+        for(String line : strStatus)
         {
             //if an index is null, it means we have reached the end of the array
             if(line == null)
@@ -56,11 +76,15 @@ public abstract class Player
         }
             
     }
-    public void addQuery(String query)
+
+    /**
+     * <b>Void:</b> addQuery(String query)
+     * <p>This function reads a query line into the response table</p>
+     * @param query A "query" string (any line that starts with CONST.READ.QUERY_DELIM from the script file.
+     */
+    private void addQuery(String query)
     {
-        // split the query into actor and string, remembering to ignore escaped split delims
         String[] line = query.split("(?<!"+ CONST.READ.IGNORE_DELIM +")"+ CONST.READ.SPLIT_DELIM_1);
-        // make sure it is the correct length
         if(line.length != 2)
             return;
         /*
@@ -70,9 +94,14 @@ public abstract class Player
         line[1] = line[1].trim().replaceAll("^[\\s\\S]", ("" +line[1].trim().charAt(0)).toUpperCase());
         this.narrationTable.put(this.narrationTable.size(), line);
     }
-    public void addResponse(String response)
+
+    /**
+     * <b>Void:</b> addResponse
+     * <p></p>
+     * @param response
+     */
+     private void addResponse(String response)
     {
-        // we want to ignore decision delims preceeded by escape chars
         String[] line = response.split("(?<!"+ CONST.READ.IGNORE_DELIM +")"+ CONST.READ.SPLIT_DELIM_2);
         // we should only have 2 results if we get more play it safe and ignore this
         if(line.length != 2)
@@ -85,11 +114,11 @@ public abstract class Player
 
         this.responseTable.put(this.responseTable.size(), line);
     }
-    public void narrateNext()
+    void narrateNext()
     {
         this.narrate(this.narrationTable);
     }
-    public void narrate(HashMap<Integer,String[]> narrationTable)
+    private void narrate(HashMap<Integer, String[]> narrationTable)
     {
         for(int ind = 0;ind<narrationTable.size();ind++)
         {
@@ -104,11 +133,11 @@ public abstract class Player
             Input.request();
         }
     }
-    public void respondNext()
+    void respondNext()
     {
         this.respond(this.responseTable);
     }
-    public void respond(HashMap<Integer,String[]> responseTable)
+    private void respond(HashMap<Integer, String[]> responseTable)
     {
         // if there is no dialog attached to the only option available, dont bother asking for a decision
 
@@ -127,7 +156,7 @@ public abstract class Player
         }
         System.out.println();
     }
-    public void choose()
+    void choose()
     {
         if(this.responseTable.isEmpty())
         {
@@ -144,10 +173,10 @@ public abstract class Player
             System.out.println("That isn't a choice");
             result = Input.requestChoice();
         }
-        this.interpStringCode(this.responseTable.get(result-1)[0]);   
-        
+        this.interpStringCode(this.responseTable.get(result-1)[0]);
+        this.story.setVar("status",this.status);
     }
-    public void talk(String actor, String line)
+    private void talk(String actor, String line)
     {
         if(actor.isEmpty())
         {
@@ -156,29 +185,28 @@ public abstract class Player
         }
         System.out.printf("[%s]%-1s", actor,line);
     }
-    public void ask(Integer index, String option )
+    protected void ask(Integer index, String option)
     {
         System.out.printf("%d:%-2s\n", index, option );
     }
     
-    public boolean validateChoice(int index)
+    private boolean validateChoice(int index)
     {
         /*if( this.responseTable.containsKey(index))
             return true;
         return false;*/
         return this.responseTable.containsKey(index);
     }
-    public void interpStringCode(String code)
+    private void interpStringCode(String code)
     {
         
         if(this.isActionCall(code))
         {
-         //   System.out.println("made call using" + code);
             code = this.makeActionCall(code);
         }
         this.status += code;
     }
-    public String insertVars(String line)
+    private String insertVars(String line)
     {
         String[] varList = line.split("(?<!"+ CONST.READ.IGNORE_DELIM + ")" + CONST.READ.VAR_DELIM_1 +"|(?<!" + CONST.READ.IGNORE_DELIM + ")"+ CONST.READ.VAR_DELIM_2);
         String v;
@@ -193,32 +221,39 @@ public abstract class Player
         }
         return line;
     }
-    public String getVar(String var)
+    private String getVar(String var)
     {
         if(this.story.hasString(var))
             return this.story.getString(var);
         return "<Null Variable Pointer("+ var +") >";
     }
-    public boolean isActionCall(String code)
-    {  // System.out.println(Arrays.toString(this.actionTable.keySet().toArray()));
-       // System.out.printf("Call: %s\nPassed check 1: %s\nPassed check 2: %s\nCheck 2 key: %s\n", code,code.startsWith("" + Format.FUNCTION_DELIM), this.actionTable.containsKey(code.replace(""+Format.FUNCTION_DELIM,"").trim()),code.replace(""+Format.FUNCTION_DELIM,"") );
-        if(code.startsWith("" + CONST.READ.FUNCTION_DELIM))
-            if(this.story.hasAction(code.replace(CONST.READ.FUNCTION_DELIM,"")))
+
+
+    private boolean isActionCall(String code)
+    {
+        if(code.startsWith(CONST.READ.FUNCTION_DELIM)) {
+            if (this.story.hasAction(code.replace(CONST.READ.FUNCTION_DELIM, "").split(CONST.READ.ARGUMENT_DELIM)[0]))
                 return true;
+        }
         return false;
     }
-    public String makeActionCall(String code)
+
+
+    private String makeActionCall(String code)
     {
         String result;
-        String call = code.replace(CONST.READ.FUNCTION_DELIM,"").split(CONST.READ.ARUMENT_DELIM,1)[0];
-        //System.out.println(call);
+        String call = code.replace(CONST.READ.FUNCTION_DELIM,"").split(CONST.READ.ARGUMENT_DELIM)[0];
         result = this.story.callAction(call,getArguments(code));
         return result;
     }
-    public String[] getArguments(String call)
+
+
+    private String[] getArguments(String call)
     {
         String[] result;
-        result = call.split("%[^"+ CONST.READ.ARUMENT_DELIM + "]*"+ CONST.READ.ARUMENT_DELIM + "|"+ CONST.READ.ARUMENT_DELIM);
+        result = call.split("%[^"+ CONST.READ.ARGUMENT_DELIM + "]*"+ CONST.READ.ARGUMENT_DELIM +
+                "|" + CONST.READ.ARGUMENT_DELIM +
+                "|" + CONST.READ.SPLIT_DELIM_2 + "[\\s\\S]*");
         return result;
     }
     

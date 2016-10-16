@@ -11,7 +11,7 @@ interface option
 public class Menu 
 {
     // Title of the game to display
-    String STR_TITLE = "RPG Engine";
+    public String STR_TITLE = "RPG Engine";
     // Map String-Function
     HashMap<String,option> menuOptions = new HashMap<>();
     // Menu order (max 10 options arbitrary)

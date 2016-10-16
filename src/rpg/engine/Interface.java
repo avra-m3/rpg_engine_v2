@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package rpg.engine;
-
 interface CONST
 {
     /** Script data format constants */
@@ -18,7 +17,7 @@ interface CONST
         String VAR_DELIM_2 = ">";
         String IGNORE_DELIM = "/";
         String FUNCTION_DELIM = "%";
-        String ARUMENT_DELIM = ",";
+        String ARGUMENT_DELIM = ",";
     }
     /** Save data format constants */
     interface SAVE {

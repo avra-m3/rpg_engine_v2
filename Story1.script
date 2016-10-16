@@ -6,12 +6,12 @@ Syntax rules: / exits out of a char string
 +*
 &Old Man;Sadly child, this is where we must part ways, it seems I have nothing more to teach you.
 &System;Story ended unexpectedly due to unclosed story path.
-&System;Please report this message to the nearest developer along with the story code
+&System;Please report this message to the nearest developer along with the story code(<status>)
 %end
 +
 &Old Man;Hello <name>, what are you doing out in the woods?
 A:Looking for the spooky monster, I'm going to slay it.
-A:I have no parents so i can do what i want!
+DEBUG_1:I have no parents so i can do what i want!
 B:I don't wanna talk to ya!!
 +B
 &Old Man;Well that's rather rude, I will see you around boy.
@@ -37,3 +37,11 @@ B:I don't wanna talk to ya!!
 +AAB|AAA|ABA
 &Old Man; Its been a pleasure meeting you <name>, see you round' <gender>
 %end
+
+
+// DEBUG FUNCTIONS
++DEBUG_1
+&Developer Mode;Select a debug option
+%print,hello,hello2:Test Print function
+%inventory:Display inventory
+%end:Quit
