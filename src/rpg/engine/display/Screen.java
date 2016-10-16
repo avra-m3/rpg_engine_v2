@@ -1,11 +1,14 @@
 package rpg.engine.display;
-
 /**
- * Created by A on 14/10/2016.
+ * <h1>rpg_engine_v2.${PACKAGE_NAME}</h1>
+ * <h5>Created by A on 14/10/2016.</h5>
+ * <br>
+ * <b>File Name</b>
+ * <p>Purpose of this file </p>
+ *
  */
 
 import javax.swing.*;
-import java.io.PrintStream;
 
 public class Screen extends JFrame{
     public TextOut txt;
@@ -21,9 +24,9 @@ public class Screen extends JFrame{
     }
     public void create()
     {
-        this.txt = new TextOut();
+        /*this.txt = new TextOut();
         this.cout = new CustomOut(this.txt);
         PrintStream sysOut = new PrintStream(new CustomOut(this.txt));
-        System.setOut(sysOut);
+        System.setOut(sysOut);*/
     }
 }

@@ -5,7 +5,7 @@ import java.io.OutputStream;
 /**
  * This class extends from OutputStream to redirect output to a TextOut object
  */
-public class CustomOut extends OutputStream {
+class CustomOut extends OutputStream {
     private TextOut tOut;
 
     public CustomOut(TextOut textOut) {
@@ -16,8 +16,4 @@ public class CustomOut extends OutputStream {
 
         tOut.append(String.valueOf((char)i));
     }
-    /*@Override
-    public void write(byte[] b) throws IOException {
-        tOut.append(b.toString());
-    }*/
 }

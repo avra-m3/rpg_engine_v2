@@ -14,7 +14,7 @@ public abstract class Player
      * Internal Variables
      */
     protected String status;
-    protected Input lookup;
+    private Input lookup;
     protected Story story;
     /**
      * Map definitions
@@ -35,6 +35,14 @@ public abstract class Player
      * <br>All items in the story table should be added here
      */
     public abstract void init();
+
+    protected static void setTitle(String name){
+        Story.Title=name;
+    }
+    final protected void setScript(String filePath){
+        this.lookup.load(filePath);
+    }
+
     /**
      * <b>Void:</b> putNextStatus()
      * This functions gets the next status from the input buffer.
@@ -98,7 +106,7 @@ public abstract class Player
     /**
      * <b>Void:</b> addResponse
      * <p></p>
-     * @param response
+     * @param response the response string to add.
      */
      private void addResponse(String response)
     {

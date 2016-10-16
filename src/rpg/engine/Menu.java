@@ -8,59 +8,57 @@ interface option
     void run();
 }
 
-public class Menu 
+class Menu
 {
-    // Title of the game to display
-    public String STR_TITLE = "RPG Engine";
     // Map String-Function
-    HashMap<String,option> menuOptions = new HashMap<>();
+    private HashMap<String,option> menuOptions = new HashMap<>();
     // Menu order (max 10 options arbitrary)
-    String[] menuOptionsStr = new String[10];
+    private String[] menuIndex = new String[10];
 
     /** Constructor*/
     Menu()
     {
-        menuOptions.put("New Game", () -> this.optionStartGame());
-        menuOptions.put("Credits", () -> this.optionShowCredits());
-        menuOptions.put("Quit", () -> this.optionExitGame());
-        menuOptionsStr[0] = "New Game";
-        menuOptionsStr[1] = "Credits";
-        menuOptionsStr[2] = "Quit";
+        menuOptions.put("New Game", this::optionStartGame);
+        menuOptions.put("Credits", this::optionShowCredits);
+        menuOptions.put("Quit", this::optionExitGame);
+        menuIndex[0] = "New Game";
+        menuIndex[1] = "Credits";
+        menuIndex[2] = "Quit";
     }
     /** show main menu */
     void show()
     {
-        System.out.println("Welcome to " + this.STR_TITLE);
-        for(int i=0; i< menuOptionsStr.length;i++)
+        System.out.println("Welcome to " + Story.Title);
+        for(int i = 0; i< menuIndex.length; i++)
         {
-            if(this.menuOptionsStr[i] == null)
+            if(this.menuIndex[i] == null)
                 break;
-            this.ask(i + 1, menuOptionsStr[i]);
+            this.ask(i + 1, menuIndex[i]);
         }
     }
     /**get the selected menu option*/
     void get()
     {
         int result = Input.requestChoice(1, menuOptions.size()+1);
-        this.menuOptions.get(menuOptionsStr[result-1]).run();
+        this.menuOptions.get(menuIndex[result-1]).run();
     }
     /**format an option*/
-    void ask(int index, String option)
+    private void ask(int index, String option)
     {
         System.out.printf("%d:%-1s\n",index,option);
     }
     /**function to start a game*/
-    void optionStartGame()
+    private void optionStartGame()
     {
         Loop.FLAG_GAME_STATUS = 1;
     }
     /**function to exit the game*/
-    void optionExitGame()
+    private void optionExitGame()
     {
         Loop.FLAG_GAME_STATUS = -1;
     }
     /**function to show credits*/
-    void optionShowCredits()
+    private void optionShowCredits()
     {
         // No idea why we have a try-catch syatement here but ill keep it 
         // just in case.
@@ -68,20 +66,20 @@ public class Menu
         {
             for(String str: Menu.STR_CREDITS)
             {
-                // we dont want to vomit the entirety of the credits in one go.
+                // we don't want to vomit the entirety of the credits in one go.
                 Thread.sleep(500);
                 System.out.println(str);
                 
             }
             Input.request();
         }
-        catch(Exception ex)
+        catch(InterruptedException ex)
         {
-            // TODO: figure out what error is supposedly being thrown
+            //Nothing to do as this shouldn't screw everything over hard.
         }
     }
 
-    static final String[] STR_CREDITS = {
+     final private static String[] STR_CREDITS = {
         "",
         "--------------------------------------------------------------------",
         "This game was created by Avrami Hammer and Tom Lawlor as part of the",

@@ -39,7 +39,7 @@ B:I don't wanna talk to ya!!
 %end
 
 
-// DEBUG FUNCTIONS
+//DEBUG FUNCTIONS
 +DEBUG_1
 &Developer Mode;Select a debug option
 %print,hello,hello2:Test Print function

@@ -2,9 +2,12 @@ package rpg.engine;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Objects;
 
 
 public class Story {
+    // Title of the game to display
+    static String Title = "RPG Engine";
     private HashMap<String,Object> variables = new HashMap<>();
     private HashMap<String,Action> actions = new HashMap<>();
     /** This function will be used to obtain player vars when saving.*/
@@ -33,16 +36,20 @@ public class Story {
             temp = temp[1].split(CONST.SAVE.VAR_VAL_DELIM,1);
             type = temp[0];
             value = temp[1];
-            if(type.equals("java.lang.Integer"))
-                value = Integer.valueOf((String) value);
-            else if(type.equals("java.lang.Boolean"))
-                value = Boolean.valueOf((String) value);
-            else if(!(type.equals("java.lang.String")))
-                value += "<" + type + ">";
+
             if(type.endsWith("[]"))
             {
                 type = type.substring(0,type.length()-2);
                 value = StringToArray(type,(String) value);
+            }
+            else
+            {
+                if(type.equals("java.lang.Integer"))
+                    value = Integer.valueOf((String) value);
+                else if(type.equals("java.lang.Boolean"))
+                    value = Boolean.valueOf((String) value);
+                else if(!(type.equals("java.lang.String")))
+                    value += "<" + type + ">";
             }
 
             result.put(name,value);
@@ -130,25 +137,26 @@ public class Story {
         clearActions();
         clearVars();
     }
-    static Object[] StringToArray(String type, String str) {
+    private static Object[] StringToArray(String type, String str) {
         Object[] result;
         str = str.substring(1,str.length()-1);
         String[] temp = str.split(",");
         result = new Object[temp.length];
         int x = 0;
-        if(type == "java.lang.Integer")
+        if(type.equals("java.lang.Integer"))
             for(String s:temp) {
+                // we are using Integer not int and thus the value can be null
+                if(s.equals("null")) s = null;
                 result[x] = Integer.valueOf(s);
                 ++x;
             }
-        else if(type == "java.lang.Boolean")
-
+        else if(type.equals("java.lang.Boolean"))
             for(String s:temp) {
-                if(s == "null") s = null;
+                if(s.equals("null")) s = null;
                 result[x] = Boolean.valueOf(s);
                 ++x;
             }
-        else if(!(type == "java.lang.String"))
+        else if(!(Objects.equals(type, "java.lang.String")))
             for(String s:temp) {
                 result[x] = String.valueOf(s);
                 ++x;

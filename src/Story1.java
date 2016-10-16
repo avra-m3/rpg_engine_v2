@@ -9,21 +9,17 @@ import java.util.Random;
 /**This is the only class that requires modification to change the story*/
 public class Story1 extends Player{
     /**Variable definitions here:*/
-    private Random rngDice;
+    private Random rngDice = new Random();
     /**Program entry point*/
     public static void main(String[] args)
     {
+        setTitle("Demonstrative Story");
         Loop.run(new Story1());
-    }
-    /**Class constructor, does most of the class definitions, calls parent constructor because we need to*/
-    private Story1() {
-        super();
-        this.lookup.load("Story1.script");
-        this.rngDice = new Random();
     }
     /**the successor to filltables() init just is a nicer name and fits better imo*/
     public void init()
     {
+        this.setScript("Story1.script");
         this.story.addVar("name", "child");
         this.story.addVar("gender", STORY.GENDER_TERMS_1[2]);
         this.story.addVar("gender2", STORY.GENDER_TERMS_2[2]);
