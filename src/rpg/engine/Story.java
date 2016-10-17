@@ -11,7 +11,11 @@ public class Story {
     private HashMap<String,Object> variables = new HashMap<>();
     private HashMap<String,Action> actions = new HashMap<>();
     /** This function will be used to obtain player vars when saving.*/
-     String[] getSaveString(HashMap<String,Object> vars) {
+    String[] getSaveString(){
+        return getSaveString(this.variables);
+    }
+
+    static String[] getSaveString(HashMap<String,Object> vars) {
         String[] result = new String[vars.size()];
         int k = 0;
         for (String str : vars.keySet()) {
@@ -23,8 +27,10 @@ public class Story {
         }
         return result;
     }
+
+    void readSave(String[] vars){this.variables = Story.readSaveString(vars);}
     /** Save read function */
-     HashMap<String,Object> readSaveString(String[] vars){
+    static HashMap<String,Object> readSaveString(String[] vars){
         HashMap<String,Object> result = new HashMap<>();
         String[] temp;
         String name,type;

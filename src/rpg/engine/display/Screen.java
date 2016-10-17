@@ -9,6 +9,7 @@ package rpg.engine.display;
  */
 
 import javax.swing.*;
+import java.io.PrintStream;
 
 public class Screen extends JFrame{
     public TextOut txt;
@@ -24,9 +25,12 @@ public class Screen extends JFrame{
     }
     public void create()
     {
-        /*this.txt = new TextOut();
+        this.txt = new TextOut();
+        this.add(this.txt);
+        this.setVisible(true);
+        this.txt.setVisible(true);
         this.cout = new CustomOut(this.txt);
         PrintStream sysOut = new PrintStream(new CustomOut(this.txt));
-        System.setOut(sysOut);*/
+        System.setOut(sysOut);
     }
 }

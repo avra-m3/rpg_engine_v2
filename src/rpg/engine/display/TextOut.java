@@ -10,9 +10,6 @@ package rpg.engine.display;
 import javax.swing.*;
 
 class TextOut extends JTextArea {
-    TextOut(){
-        super(100,100);
-    }
     @Override
     public void append(String s)
     {

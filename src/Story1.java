@@ -27,12 +27,7 @@ public class Story1 extends Player{
         this.story.addVar("gender_code",2);
         this.story.addVar("status",this.status);
 
-        this.story.addVar("inv_slot_1","empty");
-        this.story.addVar("inv_slot_2","empty");
-        this.story.addVar("inv_slot_3","empty");
-        this.story.addVar("inv_slot_4","empty");
-        this.story.addVar("inv_slot_5","empty");
-        this.story.addVar("inv_slot_6","empty");
+        this.story.addVar("inventory",new Object[10]);
         // Add functions to the action table
         // No idea how this works DO NOT TOUCH
         // Intelij made changes to what netbeans suggested, still dont know how it works DO NOT TOUCH!!!

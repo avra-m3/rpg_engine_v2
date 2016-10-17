@@ -1,7 +1,7 @@
 package rpg.engine;
 import java.util.HashMap;
 
-/***
+/**
  * <h1>Player class</h1>
  * <h5>The player class is the main class of this package, sub stories should extend this abstract and define functions
  * used in the story as required.</h5>
@@ -126,6 +126,10 @@ public abstract class Player
     {
         this.narrate(this.narrationTable);
     }
+
+    /**
+     * @param narrationTable
+     */
     private void narrate(HashMap<Integer, String[]> narrationTable)
     {
         for(int ind = 0;ind<narrationTable.size();ind++)
