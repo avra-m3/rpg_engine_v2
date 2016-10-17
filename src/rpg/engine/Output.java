@@ -13,10 +13,14 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class Output {
     static final String SAVE_PATH = "save.dat";
+    HashMap<String,String[]> saveData = new HashMap<>();
+    Integer lastSaveSlot = 0;
+
     static String[] read(String filepath) throws IOException
     {
         String[] result;
