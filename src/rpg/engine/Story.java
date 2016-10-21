@@ -37,6 +37,7 @@ public class Story {
         Object value;
         for(String line:vars)
         {
+            if(line == null) continue;
             temp = line.split(CONST.SAVE.VAR_TYPE_DELIM,1);
             name = temp[0];
             temp = temp[1].split(CONST.SAVE.VAR_VAL_DELIM,1);

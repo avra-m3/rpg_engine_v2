@@ -1,4 +1,5 @@
 package rpg.engine;
+import java.io.IOException;
 import java.util.HashMap;
 
 /**
@@ -35,7 +36,43 @@ public abstract class Player
      * <br>All items in the story table should be added here
      */
     public abstract void init();
+    void onExit()
+    {
+        this.talk("","Would you like to save? (y/n)");
+        String ans = Console.requestString("yes|no|y|n");
+        if (ans == null) return;
+        if(ans.equals("y") || ans.equals("yes"))
+        {
+            this.talk("","What would you like to call this save?\n");
+            ans = Console.requestString();
+            this.talk("","Which slot would you like to save in?\n");
+            for(int x=1;x<10; ++x)
+                this.ask(x,Loop.save.getSaveList(x-1));
+            Integer slot = Console.requestInteger(1,10);
+            try {
+                Loop.save.saveState(Output.SAVE_PATH, ans, this, slot-1);
+            }
+            catch (IOException e)
+            {
+                this.talk("Developer","For an unknown reason we were unable to save the game.");
+            }
+        }
+    }
 
+    void setSaveState(String[] save)
+    {
+        this.story.clear();
+        for(int x=0; x<save.length;++x)
+        {
+            String line = save[x];
+            if(line.startsWith("@status="))
+            {
+                this.status = line.substring("@status".length());
+                save[x] = null;
+                this.story.readSave(save);
+            }
+        }
+    }
     protected static void setTitle(String name){
         Story.Title=name;
     }
@@ -128,7 +165,7 @@ public abstract class Player
     }
 
     /**
-     * @param narrationTable
+     * @param narrationTable A Hashmap
      */
     private void narrate(HashMap<Integer, String[]> narrationTable)
     {
@@ -142,7 +179,7 @@ public abstract class Player
             line = insertVars(line);
             
             this.talk(actor, line);
-            Input.request();
+            Console.request();
         }
     }
     void respondNext()
@@ -166,7 +203,7 @@ public abstract class Player
             
             this.ask(ind+1, line);
         }
-        System.out.println();
+        //System.out.println();
     }
     void choose()
     {
@@ -179,11 +216,11 @@ public abstract class Player
             return;
         }
 
-        Integer result = Input.requestChoice();
+        Integer result = Console.requestInteger();
         while(!validateChoice(result-1))
         {
             System.out.println("That isn't a choice");
-            result = Input.requestChoice();
+            result = Console.requestInteger();
         }
         this.interpStringCode(this.responseTable.get(result-1)[0]);
         this.story.setVar("status",this.status);

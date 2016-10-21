@@ -2,24 +2,12 @@ package rpg.engine;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.HashMap;
 
 public class Input implements CONST.READ{
 
-    private static BufferedReader console   = new BufferedReader(new InputStreamReader(System.in));
     HashMap<String,String[]> storyFile  = new HashMap<>();
-    
-    
-    public static void main(String[] args)
-    {
-        System.out.println("--------------------------------------");
-        System.out.println("Running input.java in debug mode");
-        System.out.println("-");
-        System.out.printf("Testing input.read(String name)\n Result: %s\n", Input.read("Story1.script"));
-    }
-   
+
     // Run stuff on initialisation
     public void load( String filename )
     {
@@ -42,7 +30,7 @@ public class Input implements CONST.READ{
                 {
                     line = line.replace(CODE_DELIM, "");
                     story = new String[32];
-                    String scLine = "";
+                    String scLine;
                     int i = 0;
                     
                     while ( file.ready() && !(scLine = file.readLine() ).startsWith(CODE_DELIM) )
@@ -63,7 +51,7 @@ public class Input implements CONST.READ{
         }
         catch(Exception ex)
         {
-            
+            System.exit(-3);
         }
         return script;
     }
@@ -81,96 +69,5 @@ public class Input implements CONST.READ{
         }
         return this.storyFile.get(code);
     }
-    public static String requestString()
-    {
-        try
-        {
-            String result = console.readLine();
-            return result;
-        }
-        catch(IOException ex)
-        {
-            System.exit(-43);
-        }
-        return new String();
-    }
-    public static void request()
-    {
-        try
-        {
-            console.readLine();
-        }
-        catch(Exception ex)
-        {
-            
-        }
-        
-    }
-    public static String requestString(String regex)
-    {
-        try
-        {
-            
-            String result = console.readLine();
-            while(1==1)
-            {
-                if(result.matches(regex))
-                    return result;
-                System.out.println("Sorry that is a bad answer, please try again.");
-                result = console.readLine();
-            }
-        }
-        catch(IOException ex)
-        {
-            System.exit(-43);
-        }
-        return new String();
-    }
-    static Integer requestChoice()
-    {
-        System.out.println("Please choose an option:");
-        try
-        {
-            while(true)
-            {
-                String result = console.readLine();
-                if(result.trim().equals("") )
-                {
-                }
-                else if(result.matches("\\d{" + result.length() + "}"))
-                    return Integer.parseInt(result);
-                System.out.println("You must enter a number");
-            }
-        }
-        catch(IOException ex)
-        {
-            System.out.println(ex);
-            System.exit(-300);
-        }
-        return -1;
-    }
-    public static Integer requestChoice(int lowerLimit, int upperLimit)
-    {
-        System.out.println("Please choose an option:");
-        try
-        {
-            while(true)
-            {
-                String result = console.readLine();
-                if(result.trim().equals("") )
-                {
-                }
-                else if(result.matches("["+ lowerLimit + "-" + upperLimit + "]"))
-                    return Integer.parseInt(result);
-                System.out.println("You must enter a number between " + lowerLimit + " and " + upperLimit);
-            }
-        }
-        catch(IOException ex)
-        {
-            System.out.println(ex);
-            System.exit(-300);
-        }
-        return -1;
-    }
-            
+
 }

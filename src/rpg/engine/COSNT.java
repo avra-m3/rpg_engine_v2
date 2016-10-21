@@ -6,6 +6,11 @@
 package rpg.engine;
 interface CONST
 {
+    interface DEBUG {
+        boolean ENABLE_SAVE_ENGINE = false;
+        boolean ENABLE_DEBUG_ENGINE = false;
+        boolean ENABLE_TOMS_CODE = true;//lol jk, its false.
+    }
     /** Script data format constants */
     interface READ {
         String CODE_DELIM = "+";

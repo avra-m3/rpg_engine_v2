@@ -1,6 +1,7 @@
 
 package rpg.engine;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 interface option
@@ -13,44 +14,69 @@ class Menu
     // Map String-Function
     private HashMap<String,option> menuOptions = new HashMap<>();
     // Menu order (max 10 options arbitrary)
-    private String[] menuIndex = new String[10];
+    private ArrayList<String> menuIndex = new ArrayList<>(9);
 
     /** Constructor*/
     Menu()
     {
+        if(CONST.DEBUG.ENABLE_SAVE_ENGINE &&Loop.save.getLastSaveSlot() > -1) {
+            menuOptions.put("Continue", this::optionContinueGame);
+            menuIndex.add(0,"Continue");
+        }
         menuOptions.put("New Game", this::optionStartGame);
+        menuIndex.add("New Game");
+        if(CONST.DEBUG.ENABLE_SAVE_ENGINE && !Loop.save.isEmpty()) {
+            menuOptions.put("Load", this::optionLoadGame);
+            menuIndex.add("Load Game");
+        }
         menuOptions.put("Credits", this::optionShowCredits);
         menuOptions.put("Quit", this::optionExitGame);
-        menuIndex[0] = "New Game";
-        menuIndex[1] = "Credits";
-        menuIndex[2] = "Quit";
+
+        menuIndex.add("Credits");
+        menuIndex.add("Quit");
     }
+
+
+
     /** show main menu */
     void show()
     {
         System.out.println("Welcome to " + Story.Title);
-        for(int i = 0; i< menuIndex.length; i++)
+        for(int i = 0; i< menuIndex.size(); i++)
         {
-            if(this.menuIndex[i] == null)
-                break;
-            this.ask(i + 1, menuIndex[i]);
+            this.ask(i + 1, menuIndex.get(i));
         }
     }
     /**get the selected menu option*/
     void get()
     {
-        int result = Input.requestChoice(1, menuOptions.size()+1);
-        this.menuOptions.get(menuIndex[result-1]).run();
+        int result = Console.requestInteger(1, menuOptions.size()+1);
+        this.menuOptions.get(menuIndex.get(result-1)).run();
     }
     /**format an option*/
     private void ask(int index, String option)
     {
         System.out.printf("%d:%-1s\n",index,option);
     }
+    /**
+     * set the game state to the last saved game.
+     */
+    void  optionContinueGame()
+    {
+
+    }
+
+    /**
+     * set the game state to the choice of the player
+     */
+    void optionLoadGame()
+    {
+
+    }
     /**function to start a game*/
     private void optionStartGame()
     {
-        Loop.FLAG_GAME_STATUS = 1;
+        Loop.FLAG_GAME_STATUS = 2;
     }
     /**function to exit the game*/
     private void optionExitGame()
@@ -71,7 +97,7 @@ class Menu
                 System.out.println(str);
                 
             }
-            Input.request();
+            Console.request();
         }
         catch(InterruptedException ex)
         {

@@ -1,4 +1,4 @@
-import rpg.engine.Input;
+import rpg.engine.Console;
 import rpg.engine.Loop;
 import rpg.engine.Player;
 
@@ -21,6 +21,7 @@ public class Story1 extends Player{
     {
         this.setScript("Story1.script");
         this.story.addVar("name", "child");
+        this.story.addVar("ply_Inventory", new String[9]);
         this.story.addVar("gender", STORY.GENDER_TERMS_1[2]);
         this.story.addVar("gender2", STORY.GENDER_TERMS_2[2]);
         this.story.addVar("gender3", STORY.GENDER_TERMS_3[2]);
@@ -64,7 +65,7 @@ public class Story1 extends Player{
     private String setName(String[] args)
     {
         System.out.println("What is your name? ");
-        this.setName(Input.requestString());
+        this.setName(Console.requestString());
         return "A";
     }
     /**Story Function: randomName, sets the players name randomly.*/
@@ -80,7 +81,7 @@ public class Story1 extends Player{
         this.ask(1, "Male");
         this.ask(2, "Female");
         this.ask(3, "I'm not defined by gender");
-        int result = Input.requestChoice(1, 3);
+        int result = Console.requestInteger(1, 3);
         this.setGender(result -1);
         return "B";
     }
@@ -93,12 +94,12 @@ public class Story1 extends Player{
     /**Story Function: endGame, ends the game.*/
     private String endGame(String[] args)
     {
-        Loop.FLAG_GAME_STATUS = 0;
+        Loop.FLAG_GAME_STATUS = 1;
         this.clear();
         this.init();
         System.out.println("The End");
         System.out.println("press enter to continue...");
-        Input.request();
+        Console.request();
         return "";
     }
     /**Utility Function: clear, resets the story and the variables.*/
