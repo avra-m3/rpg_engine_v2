@@ -146,10 +146,10 @@ class Output {
      * <b>Void:saveState</b>
      * <p>This function writes the state of the game to the save file.</p>
      * @param filepath The filepath of the save
-     * @param saveName The name the player chooses to save their game by
+     * @param saveName The name the player chooses to save their game bye
      * @param ply Should be the current Instance of the player object
      * @param slot The save slot.
-     * @throws IOException
+     * @throws IOException Interacts with Files.write and don't want to handle the exception inline.
      */
     void saveState(String filepath,String saveName, Player ply, Integer slot) throws IOException
     {
@@ -171,6 +171,6 @@ class Output {
         }
 
         strFile.addAll(Arrays.asList(ply.story.getSaveString()));
-        Files.write(Paths.get(SAVE_PATH),strFile, Charset.defaultCharset());
+        Files.write(Paths.get(filepath),strFile, Charset.defaultCharset());
     }
 }
