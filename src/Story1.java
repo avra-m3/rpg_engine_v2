@@ -1,6 +1,7 @@
 import rpg.engine.Console;
 import rpg.engine.Loop;
 import rpg.engine.Player;
+import rpg.engine.Story;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -10,6 +11,7 @@ import java.util.Random;
 public class Story1 extends Player{
     /**Variable definitions here:*/
     private Random rngDice = new Random();
+    private Inventory inventory;
     /**Program entry point*/
     public static void main(String[] args)
     {
@@ -39,6 +41,8 @@ public class Story1 extends Player{
         this.story.addAction("randomGender", this::randomGender);
         this.story.addAction("print", this::printVar);
         this.story.addAction("inventory", this::printInventory);
+
+        inventory = new Inventory(this.story);
     }
     /**Story Function: printVar, [DEBUG] used in testing to make sure arguments feature is working*/
     private String printVar(String[] args)
@@ -215,4 +219,64 @@ interface STORY
                     "Picard",
                     "Lawlor",
             };
+}
+/**
+ * Tom's code w/adaption
+ */
+class Inventory
+{
+    private final int length = 15;
+    private Story story;
+    Inventory(Story story)
+    {
+        this.story = story;
+        story.addVar("inventory",new String[length]);
+    }
+    private String[] getInventory()
+    {
+        return (String[]) this.story.getVar("inventory");
+    }
+    public boolean add(String item)
+    {
+        int nextSlot = findFreeSlot();
+        if (nextSlot >= 0)
+        {
+            getInventory()[nextSlot] = item;
+            return true;
+        }
+        return false;
+    }
+
+    public void delAll(String item)
+    {
+        for(int i=0;i<this.getInventory().length;i++)
+            if(this.getInventory()[i].equals(item))
+                getInventory()[i] = null;
+    }
+    public void del(int index)
+    {
+        getInventory()[index] = null;
+    }
+    public String get(int index)
+    {
+        return getInventory()[index];
+    }
+
+    public int maxSize()
+    {
+        return length;
+    }
+
+    private int findFreeSlot()
+    {
+        for(int i=0;i<getInventory().length;i++)
+        {
+            if(getInventory()[i]==null)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
 }
