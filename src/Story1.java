@@ -230,11 +230,17 @@ class Inventory
     Inventory(Story story)
     {
         this.story = story;
-        story.addVar("inventory",new String[length]);
+        story.setVar("inventory",new String[length]);
+        story.addAction("printInv",this::printInventory);
+        story.addAction("addInv",this::addToInventory);
     }
-    private String[] getInventory()
+    private Object[] getInventory()
     {
-        return (String[]) this.story.getVar("inventory");
+        return (Object[]) this.story.getVar("inventory");
+    }
+    private String getInventory(int index)
+    {
+        return (String) ((Object[])this.story.getVar("inventory"))[index];
     }
     public boolean add(String item)
     {
@@ -246,7 +252,35 @@ class Inventory
         }
         return false;
     }
+    public String printInventory(String[] args)
+    {
+        this.read();
+        return "";
+    }
+    public String addToInventory(String[] args)
+    {
+        if(!this.add(args[1]))
+            System.out.println("Inventory full");
+        else
+            System.out.println("Added " + args[1]  + " to your Inventory");
 
+        return "";
+    }
+    public void read()
+    {
+        System.out.println("----------------");
+        System.out.println("slot|----item---");
+        System.out.println("----|-----------");
+        for(int i =0;i<this.length;++i)
+        {
+            String item =  this.getInventory(i);
+            if(item == null)
+            {
+                item = "empty";
+            }
+            System.out.printf("%4d| %-10s\n",i,item);
+        }
+    }
     public void delAll(String item)
     {
         for(int i=0;i<this.getInventory().length;i++)
@@ -259,7 +293,7 @@ class Inventory
     }
     public String get(int index)
     {
-        return getInventory()[index];
+        return getInventory(index);
     }
 
     public int maxSize()

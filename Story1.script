@@ -42,6 +42,7 @@ B:I don't wanna talk to ya!!
 //DEBUG FUNCTIONS
 +DEBUG_1
 &Developer Mode;Select a debug option
-%print,hello,Hi Tom:Test Print function
-%inventory:Display inventory
+%print,hello,Hi Tom:Test Print function.
+%printInv:Display inventory.
+%addInv,Chicken:Add a chicken to the inventory.
 %end:Quit
