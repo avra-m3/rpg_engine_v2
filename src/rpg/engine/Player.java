@@ -36,6 +36,11 @@ public abstract class Player
      * <br>All items in the story table should be added here
      */
     public abstract void init();
+
+    /**
+     * Handles exiting/saving
+     * Depreciated for final build as unable to work it into the engine properly.
+     */
     void onExit()
     {
         this.talk("","Would you like to save? (y/n)");
@@ -59,6 +64,11 @@ public abstract class Player
         }
     }
 
+    /**
+     * void setSaveState
+     * Update player and story vars from a save array.
+     * @param save the save array.
+     */
     void setSaveState(String[] save)
     {
         this.story.clear();
@@ -73,9 +83,21 @@ public abstract class Player
             }
         }
     }
+
+    /**
+     * static void setTitle(Scope:protected)
+     * Change the story title
+     * @param name The new title.
+     */
     protected static void setTitle(String name){
         Story.Title=name;
     }
+
+    /**
+     * final void setScript(Scope:Protected).
+     * sets the script file the game should run from.
+     * @param filePath path to sc
+     */
     final protected void setScript(String filePath){
         this.lookup.load(filePath);
     }
@@ -165,7 +187,9 @@ public abstract class Player
     }
 
     /**
-     * @param narrationTable A Hashmap
+     * void narrate(Scope:private)
+     * read lines from the narration table.
+     * @param narrationTable A narration table.
      */
     private void narrate(HashMap<Integer, String[]> narrationTable)
     {
@@ -182,10 +206,21 @@ public abstract class Player
             Console.request();
         }
     }
+
+    /**
+     * void respondNext
+     * read the next options table.
+     */
     void respondNext()
     {
         this.respond(this.responseTable);
     }
+
+    /**
+     * void respond(Scope:Private)
+     * read the options from a response table.
+     * @param responseTable The table of potential responses.
+     */
     private void respond(HashMap<Integer, String[]> responseTable)
     {
         // if there is no dialog attached to the only option available, dont bother asking for a decision
@@ -205,6 +240,11 @@ public abstract class Player
         }
         //System.out.println();
     }
+
+    /**
+     * void choose()
+     * select and act on a response based on the players input.
+     */
     void choose()
     {
         if(this.responseTable.isEmpty())
@@ -225,6 +265,13 @@ public abstract class Player
         this.interpStringCode(this.responseTable.get(result-1)[0]);
         this.story.setVar("status",this.status);
     }
+
+    /**
+     * void talk(Scope:Private)
+     * Say a line
+     * @param actor the actor reading the line
+     * @param line the line
+     */
     private void talk(String actor, String line)
     {
         if(actor.isEmpty())
@@ -234,11 +281,26 @@ public abstract class Player
         }
         System.out.printf("[%s]%-1s", actor,line);
     }
+
+    /**
+     * void ask(Scope:Protected)
+     * format and print an option
+     * @param index the option index
+     * @param option the option text
+     */
     protected void ask(Integer index, String option)
     {
         System.out.printf("%d:%-2s\n", index, option );
     }
-    
+
+
+    /**
+     * primitive boolean validateChoice(Scope:Private)
+     * @param index the index of the option to validate
+     * @return whether or not that index is valid as an option
+     * Note: originally this function was intended to do more than just return whether the option is in the table.
+     * Kept due to laziness
+     */
     private boolean validateChoice(int index)
     {
         /*if( this.responseTable.containsKey(index))
@@ -246,6 +308,11 @@ public abstract class Player
         return false;*/
         return this.responseTable.containsKey(index);
     }
+
+    /**
+     * Function interprets and makes action calls where necessary and adds it to the status code
+     * @param code the code string to interpret.
+     */
     private void interpStringCode(String code)
     {
         
